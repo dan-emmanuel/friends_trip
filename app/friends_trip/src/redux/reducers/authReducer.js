@@ -1,24 +1,40 @@
-import {LOGIN_SUCCESS,LOGIN_ERROR,SIGN_UP_SUCCEED,SIGN_UP_ERROR} from "../actions/authActions"
+import {
+    SIGN_UP_SUCCEED,
+    SIGN_UP_ERROR,
+    SIGN_IN_SUCCEED,
+    SIGN_IN_ERROR
+} from "../actions/authActions"
 
 
 
 const initState = {
     currentUser: {},
-    authError: null,
-    signupErrorMessage:null,
+    signUpSucceed: false,
+    signupErrorMessage: null,
+    signInErrorMessage: null,
+    signInSucceed: false
+
 }
 
 
 const authReducer = (state = initState, action) => {
     switch (action.type) {
         case SIGN_UP_SUCCEED:
-            return { ...state, signupErrorMessage: null }
+            return {
+                ...state,
+                signupErrorMessage: null,
+                signUpSucceed: true,
+                currentUser: { ...state.currentUser, name: action.payload }
+            }
         case SIGN_UP_ERROR:
             return { ...state, signupErrorMessage: action.payload }
-        case LOGIN_SUCCESS:
-            return { ...state, authError: null }
-        case LOGIN_ERROR:
-            return { ...state, authError: action.payload }
+        case SIGN_IN_SUCCEED:
+            return { ...state, 
+                signInErrorMessage:null,
+                signInSucceed: true,
+                currentUser: { ...state.currentUser, name: action.payload }}
+        case SIGN_IN_ERROR:
+            return { ...state, signInErrorMessage: action.payload }
         default:
             return { ...state }
     }

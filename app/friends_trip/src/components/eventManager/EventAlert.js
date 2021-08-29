@@ -1,5 +1,4 @@
 import React, { } from "react";
-import { connect } from "react-redux";
 import {Alert } from "react-bootstrap";
 let EventAlert = (props) => {
 
@@ -12,12 +11,5 @@ let EventAlert = (props) => {
     )
 }
 
-let mapStateToProps = (({ front }) => {
-    return {
-    };
-})
-let mapDispatchToProps = (dispatch => {
-    return {
-    };
-})
-export default connect(mapStateToProps, mapDispatchToProps)(EventAlert);
+
+export default EventAlert

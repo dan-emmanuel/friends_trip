@@ -28,7 +28,7 @@ let TravelSelector = (props) => {
     };  
     return (
     <>
-    <h4 clssName="me-3"> Your travels</h4>
+    <h4 className="me-3"> Your travels</h4>
           <div className="d-flex">
               <div className="col-10">
                   <Carousel className="mt-1" responsive={responsive}>
@@ -128,7 +128,7 @@ let TravelSelector = (props) => {
 
                               <Form.Group as={Row} className="mb-3">
 
-                                  <Button className="col-10" Button type="submit">Sign in</Button>
+                                  <Button className="col-10"  type="submit">Sign in</Button>
 
                               </Form.Group>
                           </Form>

@@ -1,5 +1,4 @@
 import React, { } from "react";
-import { connect } from "react-redux";
 import { Card } from "react-bootstrap";
 let DraggableDiv = (props) => {
 
@@ -18,12 +17,5 @@ let DraggableDiv = (props) => {
     )
 }
 
-let mapStateToProps = (({ front }) => {
-    return {
-    };
-})
-let mapDispatchToProps = (dispatch => {
-    return {
-    };
-})
-export default connect(mapStateToProps, mapDispatchToProps)(DraggableDiv);
+
+export default DraggableDiv;

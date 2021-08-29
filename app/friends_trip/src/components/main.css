@@ -1,0 +1,24 @@
+.rounded_button {
+  height: 50px;
+  width: 50px;
+  border-radius: 50% !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 50px;
+}
+
+.rounded_button:focus {
+  border: 0px !important;
+  box-shadow: none !important;
+}
+
+.rounded_button > * {
+  height: 80%;
+  width: 80%;
+}
+
+
+.link-secondary.selected {
+  color: #565e64;
+}

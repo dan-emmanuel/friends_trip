@@ -1,36 +1,41 @@
-import React, {  useEffect } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Navbar, Button, Container } from "react-bootstrap";
-import { Redirect } from "react-router-dom";
 import { useHistory } from "react-router-dom";
+import { checkConnected } from "../redux/actions/authActions"
+import { IoLogOut } from "react-icons/io5";
 
 let Header = (props) => {
-    let {currentUser} = props
-    let redirect = true
+    let { currentUser,checkConnected } = props
     let history = useHistory();
 
-    useEffect(()=>{
-        if(currentUser.name===undefined)history.push("/login");
-        
-
-    },[currentUser])
+    useEffect(() => {
+        if (currentUser.name === undefined){
+          checkConnected()
+            if (currentUser.name === undefined){
+                 history.push("/login")
+            };
+        }
+    },[])
+ 
     return (
         <>
 
-           <Navbar className="justify-content-between" bg="light" expand="lg">
+            <Navbar className="justify-content-between" bg="light" expand="lg">
                 <Container>
 
                     <Navbar.Brand href="#">My Friends Trip</Navbar.Brand>
-                    <div className="d-flex">
+                    <div className="d-flex align-items-center">
                         <div className="me-2">bonjour {currentUser.name}</div>
-                        {/! je suis laaaaaa/}
-                        <Button variant="outline-success"><span class="glyphicon glyphicon-log-out"></span> Log out</Button>
+                        <Button variant="outline-danger" className="border-0">
+                            <IoLogOut/>
+                        </Button>
                     </div>
-                    
+
                 </Container>
 
             </Navbar>
-            
+
         </>
     );
 
@@ -40,4 +45,9 @@ let mapStateToProps = (({ auth }) => {
         currentUser: auth.currentUser,
     };
 })
-export default connect(mapStateToProps, null)(Header);
+let mapDispatchToProps = (dispatch => {
+    return {
+        checkConnected: () => dispatch(checkConnected()),
+    };
+})
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

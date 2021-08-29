@@ -1,13 +1,13 @@
 import axios from "axios";
 import { auth } from "../../firebase";
 
-
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS"
 export const LOGIN_ERROR = "LOGIN_ERROR"
 export const SIGN_UP_SUCCEED = "SIGN_UP_SUCCEED"
 export const SIGN_UP_ERROR = "SIGN_UP_ERROR"
 export const SIGN_IN_SUCCEED = "SIGN_IN_SUCCEED"
 export const SIGN_IN_ERROR = "SIGN_IN_ERROR"
+
 
 
 
@@ -57,5 +57,25 @@ export const signInAction = ({ mail, password }) => async (dispatch) => {
     }
 }
 
+export const checkConnected = () => async (dispatch) => {
+    try {
+        auth.onAuthStateChanged(async user=>{
+            if (user) {
+                var uid = user.uid
+                let userDatas = await  axios({
+                    method: 'post',
+                    url: `${process.env.REACT_APP_SRV_URL}signIn`,
+                    data: { useruid: uid }
+                });
+                if(userDatas.data.success)dispatch({type:SIGN_IN_SUCCEED,payload:userDatas.data.username})
+            }else{
+                
 
+            }
+            
+        })
+    } catch (error) {
+       console.log(error)
+    }
+}
 

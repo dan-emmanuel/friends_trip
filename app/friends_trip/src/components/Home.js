@@ -1,17 +1,21 @@
-import React from "react";
+import React  from "react";
 import { connect } from "react-redux";
-
+import Submenu from './Submenu'
+import TravelSelector from "./TravelSelector"
+import EventTable from "./EventTable"
 let Home = (props) => {
-    
+  
     return (
-        <div>
-            Home
-        </div>
+        <>
+            <TravelSelector/>
+            <Submenu/>
+            <EventTable />
+        </>
 
     );
 };
 let mapStateToProps = (({ auth }) => {
-    
+
     return {
     };
 })

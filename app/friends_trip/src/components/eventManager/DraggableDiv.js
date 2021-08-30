@@ -1,18 +1,32 @@
 import React, { } from "react";
-import { Card } from "react-bootstrap";
+import { Droppable } from "react-beautiful-dnd"
+
 let DraggableDiv = (props) => {
 
     return (
-            <Card className="col-3"
-                bg={props.color}
-                text="white">
-                <Card.Header
-                    as="h5">Featured
-                </Card.Header>
-                <Card.Body>
-                    {props.children}
-                </Card.Body>
-            </Card>
+
+        <Droppable droppableId={props.droppableId}>
+            {provider => (
+
+
+
+
+                <div className={`card bg-${props.color} col-3 text-white`}
+                    {...provider.droppableProps}
+                    ref={provider.innerRef}>
+                    <div className="card-header">
+                        Featured
+                    </div>
+                    <div className="card-body">
+                        {props.children}
+                    </div>
+                    <div>
+
+                    </div>
+                </div>
+            )
+            }
+        </Droppable>
 
     )
 }

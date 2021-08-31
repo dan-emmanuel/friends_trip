@@ -4,55 +4,52 @@ import { Container, } from "react-bootstrap";
 import { } from '../redux/actions/frontActions'
 import DraggableDiv from './eventManager/DraggableDiv'
 import Event from './eventManager/Event'
+import { changeEventTag } from '../redux/actions/eventActions'
 import { DragDropContext } from "react-beautiful-dnd"
 let EventTable = (props) => {
-    let { events, tags } = props
+    let { events, tags, changeEventTag } = props
     console.log(events, tags)
     let ondragend = result => {
         const { destination, source, draggableId } = result
-        console.log(destination)
-        console.log(source)
-        console.log(draggableId)
-
+        console.log(123456)
         if (!destination) return;
         if (destination.droppableId === source.droppableId && destination.index === source.index) return;
 
-        // const collumn = datas.columns[source.droppableId]
+        changeEventTag({
+            event: draggableId,
+            source: { id: source.droppableId, positionRemove: source.index },
+            destination: { id: destination.droppableId, positionInsert: destination.index }
+        })
 
     }
-
+    let colors = ["primary", "secondary", "success"]
     console.log(Object.values(tags)[0].tasksId)
     Object.values(tags)[0].tasksId.map(taskId => {
-        console.log(taskId)
         return <Event draggableId={taskId} />
     }
     )
 
-    let id=0
 
     return (
         <>
+
             <Container className="mt-4 mb-4">
                 <div className="d-flex justify-content-between">
                     <DragDropContext onDragEnd={ondragend}>
-                        <DraggableDiv color="primary" droppableId="ideas" >
-                            {Object.values(tags)[0].tasksId.map((taskId, i) => {
-                                return <Event draggableId={taskId} key={i} index={id++} />
-                            })}
+                        {Object.keys(tags).map((e, i) => {
+                            return (
+                                <DraggableDiv key={i} color={colors[i]} droppableId={e} >
+                                    {
+                                        tags[e].tasksId.map((taskId, i) => <Event
+                                            draggableId={taskId}
+                                            key={i}
+                                            index={i} 
+                                            text={taskId}
+                                            />)}
+                                </DraggableDiv>)
+                                
+                        })}
 
-                        </DraggableDiv>
-
-                        <DraggableDiv color="secondary" droppableId="onDoing">
-                            {Object.values(tags)[1].tasksId.map((taskId, i) => {
-                                return <Event draggableId={taskId} key={i} index={id++} />
-                            })}
-                        </DraggableDiv>
-
-                        <DraggableDiv color="success" droppableId="done">
-                            {Object.values(tags)[2].tasksId.map((taskId, i) => {
-                                return <Event draggableId={taskId} key={i} index={id++} />
-                            })}
-                        </DraggableDiv>
                     </DragDropContext>
                 </div >
             </Container >
@@ -70,6 +67,8 @@ let mapStateToProps = (({ front, events }) => {
 })
 let mapDispatchToProps = (dispatch => {
     return {
+        changeEventTag: (info) => dispatch(changeEventTag(info)),
+
     };
 })
 export default connect(mapStateToProps, mapDispatchToProps)(EventTable);

@@ -15,7 +15,7 @@ let Event = (props) => {
                     <div className="alert alert-secondary"   {...provider.draggableProps}
                         {...provider.dragHandleProps}
                         ref={provider.innerRef}>
-                        div
+                        {props.text}
                     </div>
 
                 )

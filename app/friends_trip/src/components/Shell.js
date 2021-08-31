@@ -16,12 +16,12 @@ let Shell = (props) => {
             {["/signup", "/login"].some((item) => item === location.pathname)
                 ? <>{props.children}</>
                 : <>
-                    <Header />
+                    <Header [/> 
                     <Container fluid>
                         <div className="d-flex">
                             <div style={
                                 {
-                                    height :"80vh"
+                                    height :"100vh"
                                 }
                             } 
                             className="col-1 d-flex flex-column justify-content-around">
@@ -32,7 +32,11 @@ let Shell = (props) => {
                                     <FaRegUser />
                                 </Button>
                             </div>
-                            <div className="col-11">
+                            <div className="col-11" id="workspace" style={{
+                                height:"100vh",
+                                overflow:"scroll",
+                                scrollbarWidth:"none"
+                            }}>
                                 {props.children}
 
                             </div>

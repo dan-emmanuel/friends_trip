@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+    import React, { useState } from "react";
 import { connect } from "react-redux";
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';

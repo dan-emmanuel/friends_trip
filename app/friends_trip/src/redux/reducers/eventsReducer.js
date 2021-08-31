@@ -1,4 +1,4 @@
-
+import { CHANGE_EVENT_TAG,NEW_EVENT } from '../actions/eventActions'
 const initState = {
     events: {
         event1: { id: "ev1", title: "ev1" },
@@ -14,17 +14,17 @@ const initState = {
         ideas: {
             id: "ideas",
             title: "ideas",
-            tasksId:["ev1","ev2","ev3","ev5"]
+            tasksId: ["ev1", "ev2", "ev3", "ev5"]
         },
         onDoing: {
             id: "onDoing",
             title: "onDoing",
-            tasksId:["ev4"]
+            tasksId: ["ev4"]
         },
         done: {
             id: "done",
             title: "done",
-            tasksId:["ev6"]
+            tasksId: ["ev6"]
         }
     }
 }
@@ -32,10 +32,25 @@ const initState = {
 
 export const eventsReducer = (state = initState, action) => {
     switch (action.type) {
-        case '':
+        case CHANGE_EVENT_TAG:
+            console.log(action.payload)
+            let tags = {
+                ...state.tags
+            } 
 
-            break;
+            console.log(tags[[action.payload.source.id]].tasksId.splice(action.payload.source.positionRemove, 1))
+            console.log(tags[[action.payload.destination.id]].tasksId.splice(action.payload.destination.positionInsert, 0, action.payload.event))
+            return {
+                ...state,
+                tags:tags
+            }
 
+        case NEW_EVENT:{
+            let tags = {
+                ...state.tags
+            }
+            tags.ideas.tasksId.push(action.payload.name)
+        }
         default:
             return { ...state }
     }

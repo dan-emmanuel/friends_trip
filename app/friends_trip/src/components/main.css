@@ -22,3 +22,7 @@
 .link-secondary.selected {
   color: #565e64;
 }
+
+#workspace::-webkit-scrollbar {
+  display: none; /* for Chrome, Safari, and Opera */
+}

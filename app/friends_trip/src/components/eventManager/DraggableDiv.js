@@ -8,9 +8,6 @@ let DraggableDiv = (props) => {
         <Droppable droppableId={props.droppableId}>
             {provider => (
 
-
-
-
                 <div className={`card bg-${props.color} col-3 text-white`}
                     {...provider.droppableProps}
                     ref={provider.innerRef}>
@@ -23,6 +20,7 @@ let DraggableDiv = (props) => {
                     <div>
 
                     </div>
+                    {provider.placeholder}
                 </div>
             )
             }

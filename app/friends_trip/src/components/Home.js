@@ -1,15 +1,18 @@
-import React  from "react";
+import React from "react";
 import { connect } from "react-redux";
 import Submenu from './Submenu'
 import TravelSelector from "./TravelSelector"
 import EventTable from "./EventTable"
 let Home = (props) => {
-  
     return (
         <>
-            <TravelSelector/>
-            <Submenu/>
-            <EventTable />
+            <div>
+                <TravelSelector />
+                <Submenu />
+            </div>
+            <div>
+                <EventTable />
+            </div>
         </>
 
     );

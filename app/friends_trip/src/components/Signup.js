@@ -20,12 +20,10 @@ let Signup = (props) => {
     } = props
     let signupevent = (e) => {
         e.preventDefault()
-        console.log(e)
 
         if (passwordRef.current.value !== passwordConfirmRef.current.value) {
             return signUpError("Password do not match")
         }
-
         signUpAction({
             mail: emailRef.current.value,
             password: passwordRef.current.value,

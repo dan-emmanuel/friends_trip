@@ -1,26 +1,22 @@
 import React, { } from "react";
-import { } from "react-bootstrap";
-import { connect, Provider } from "react-redux";
+import { connect } from "react-redux";
 import { Draggable } from "react-beautiful-dnd"
+import {openCloseEventModal} from "../../redux/actions/frontActions"
+import {setCurrentEventId} from "../../redux/actions/eventActions"
+
 
 let Event = (props) => {
-    let { events, tags } = props.events
-
+    let {setLgShow} = props
     return (
         <>
             <Draggable draggableId={props.draggableId} index={props.index}>
                 {provider => (
-
-
-                    <div className="alert alert-secondary"   {...provider.draggableProps}
+                    <div className="alert alert-secondary"  onClick={()=>setLgShow(props.eventId)} {...provider.draggableProps}
                         {...provider.dragHandleProps}
                         ref={provider.innerRef}>
                         {props.text}
                     </div>
-
-                )
-                }
-
+                )}
             </Draggable>
         </>
     )
@@ -28,7 +24,6 @@ let Event = (props) => {
 
 
 let mapStateToProps = (({ front, events }) => {
-    console.log(events)
     return {
         events: events,
         tags: events.tags
@@ -36,6 +31,10 @@ let mapStateToProps = (({ front, events }) => {
 })
 let mapDispatchToProps = (dispatch => {
     return {
+        setLgShow:(e)=>{
+            dispatch(openCloseEventModal(true))
+            dispatch(setCurrentEventId(e))
+        }
     };
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Event);

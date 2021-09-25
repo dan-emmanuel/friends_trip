@@ -1,7 +1,7 @@
 import { Switch, Route } from "react-router-dom";
 import { connect } from "react-redux";
-import React from 'react';
-
+import React, { useEffect } from 'react';
+import { checkConnected } from "../redux/actions/authActions"
 import Signup from "./Signup";
 import Signin from "./Signin";
 import Home from "./Home.js";
@@ -9,7 +9,10 @@ import Shell from "./Shell";
 import "./main.css"
 
 function App(props) {
-
+  let { checkConn } = props
+  useEffect(() => {
+    checkConn()
+  })
 
   return (
     < >
@@ -25,7 +28,7 @@ function App(props) {
           <Route path="/home">
             <Home />
           </Route>
-       
+
         </Switch>
       </Shell>
 
@@ -33,5 +36,9 @@ function App(props) {
   );
 }
 
-
-export default connect(null, null)(App);
+let mapDispatchToProps = (dispatch => {
+  return {
+    checkConn: () => dispatch(checkConnected()),
+  };
+})
+export default connect(null, mapDispatchToProps)(App);

@@ -2,7 +2,8 @@ import {
     SIGN_UP_SUCCEED,
     SIGN_UP_ERROR,
     SIGN_IN_SUCCEED,
-    SIGN_IN_ERROR
+    SIGN_IN_ERROR,
+    SIGN_OUT_SUCCESS
 } from "../actions/authActions"
 
 
@@ -29,15 +30,21 @@ const authReducer = (state = initState, action) => {
         case SIGN_UP_ERROR:
             return { ...state, signupErrorMessage: action.payload }
         case SIGN_IN_SUCCEED:
-
             return {
                 ...state,
                 signInErrorMessage: null,
                 signInSucceed: true,
-                currentUser: { ...state.currentUser, name: action.payload }
+                currentUser: { ...state.currentUser, name: action.payload.name,id:action.payload.id }
             }
         case SIGN_IN_ERROR:
             return { ...state, signInErrorMessage: action.payload }
+        case SIGN_OUT_SUCCESS:
+            return { ...state, currentUser: {},
+            signUpSucceed: false,
+            signupErrorMessage: null,
+            signInErrorMessage: null,
+            signInSucceed: false
+         }
         default:
             return { ...state }
     }

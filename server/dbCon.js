@@ -13,9 +13,6 @@ let db = knex({
       database : 'friend_trips'
     }
 }); 
-
-module.exports= {
-    db:db
+ module.exports= {
+  db:db,
 }
-
-   

@@ -16,7 +16,7 @@ let Shell = (props) => {
             {["/signup", "/login"].some((item) => item === location.pathname)
                 ? <>{props.children}</>
                 : <>
-                    <Header [/> 
+                    <Header /> 
                     <Container fluid>
                         <div className="d-flex">
                             <div style={
@@ -41,7 +41,6 @@ let Shell = (props) => {
 
                             </div>
                         </div>
-
                     </Container>
                 </>
             }

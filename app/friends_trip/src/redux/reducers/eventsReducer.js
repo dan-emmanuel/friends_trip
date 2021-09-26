@@ -11,7 +11,7 @@ import {
     UPDATE_NOTE_TEXT,
     UPDATE_NOTE_NAME,
     CHECKMATE_ON_EVENT,
-    GET_ALL_TRIPS,
+    // GET_ALL_TRIPS,
     GET_ALL_TAGS,
     GET_ALL_EVENTS
 
@@ -72,7 +72,7 @@ const initState = {
 
     //     }
     // ],
-    events:[],
+    events: [],
     // subEvents: [
     //     {
     //         id: "0",
@@ -93,7 +93,7 @@ const initState = {
     //     },
 
     // ],
-    subEvents:[],
+    subEvents: [],
     // tags: {
     //     ideas: {
     //         id: "ideas",
@@ -111,7 +111,7 @@ const initState = {
     //         tasksId: [4]
     //     }
     // },
-    tags:[],
+    tags: [],
     trips: [],
     currentEvent: undefined,
     currentTrip: undefined,
@@ -121,18 +121,34 @@ const initState = {
 
 
 export const eventsReducer = (state = initState, action) => {
-    let tags, subEvents,events,trips,currentTrip
+    let tags, subEvents, events, trips
     switch (action.type) {
         case CHANGE_EVENT_TAG:
             tags = { ...state.tags }
             tags[action.payload.source.id].tasksId.splice(action.payload.source.positionRemove, 1)
             tags[action.payload.destination.id].tasksId.splice(action.payload.destination.positionInsert, 0, action.payload.event)
-            return { ...state, tags: tags };
+            console.log(0)
+            return { ...state, tags: tags }
         case CHANGE_TRIP_INFO:
+
             trips = [...state.trips]
-            state.currentTrip !== undefined
-                ? trips[state.currentTrip] = { name: action.payload.name, desc: action.payload.desc }
-                : trips.push({ name: action.payload.name, desc: action.payload.desc })
+
+            if (action.payload.action === "update") {
+                let tripToChange = trips.find(e => e.id === state.currentTrip)
+                tripToChange = { ...tripToChange, ...{ ...action.payload.tripData } }
+                trips = trips.map(
+                    e => {
+                        return e.id===state.currentTrip
+                        ?tripToChange
+                        :e
+                    }
+
+                )
+
+            } else {
+                let trip = action.payload[0]
+                trips.push({ name: trip.name, desc: trip.desc, id: trip.id })
+            }
             return { ...state, trips: trips }
         case NEW_EVENT:
             tags = {
@@ -142,14 +158,21 @@ export const eventsReducer = (state = initState, action) => {
             tags.ideas.tasksId.push(nextId)
             events = [...state.events]
             events.push({ id: nextId, title: "new event", dbId: undefined })
+            console.log(2)
             return { ...state, events: events, tags: tags }
         case SET_CURRENT_EVENT_ID:
+            console.log(3)
+
             return { ...state, currentEvent: action.payload }
         case SET_CURRENT_SUB_EVENT_ID:
+            console.log(4)
+
             return { ...state, currentSubEvent: action.payload }
         case SET_CURRENT_TRIP_ID:
             return { ...state, currentTrip: action.payload }
         case MAKE_LI_CHECKED:
+            console.log(6)
+
             subEvents = [...state.subEvents]
             subEvents[state.currentSubEvent].items[action.payload.id].done = action.payload.checked
             return { ...state, subEvents: subEvents }
@@ -161,6 +184,7 @@ export const eventsReducer = (state = initState, action) => {
             subEvents[state.currentSubEvent].items === undefined
                 ? subEvents[state.currentSubEvent].items = [{ text: action.payload, done: false }]
                 : subEvents[state.currentSubEvent].items.push({ text: action.payload, done: false })
+            console.log(7)
 
             return { ...state, subEvents: subEvents }
         case NEW_SUB_EVENT:
@@ -175,42 +199,58 @@ export const eventsReducer = (state = initState, action) => {
 
                 }
             )
+            console.log(8)
+
             return { ...state, subEvents: subEvents }
         case UPDATE_NOTE_TEXT:
             subEvents = [...state.subEvents]
             subEvents[state.currentSubEvent].text = action.payload
+            console.log(9)
+
             return { ...state, subEvents: subEvents }
         case UPDATE_NOTE_NAME:
             subEvents = [...state.subEvents]
             subEvents[state.currentSubEvent].name = action.payload
+            console.log(10)
+
             return { ...state, subEvents: subEvents }
         case CHECKMATE_ON_EVENT:
             events = [...state.events]
             events[state.currentEvent].mates.find(e => e.id === action.payload.mateid).mate = action.payload.value
+            console.log(11)
+
             return { ...state, events: events }
-        case GET_ALL_TRIPS:
-            console.log(action.payload)
-            trips=action.payload.trips
-            currentTrip=action.payload.trips[0].id
-            events = [...action.payload.events]
-            return { ...state,trips,currentTrip,events}
+        // case GET_ALL_TRIPS:
+        //     console.log(action.payload)
+        //     trips=action.payload.trips
+        //     currentTrip=action.payload.trips[0].id
+        //     events = [...action.payload.events]
+        //     console.log(12)
+
+        //     return { ...state,trips,currentTrip,events}
         case GET_ALL_TAGS:
             tags = action.payload
             tags.forEach(element => {
-               element.tasksId=[]
+                element.tasksId = []
             });
-            return {...state,tags}
+            console.log(13)
+
+            return { ...state, tags }
         case GET_ALL_EVENTS:
+            trips = action.payload.trips
             events = [...action.payload.events]
-            tags= [...state.tags]
-            events.forEach(e=>{
-                let currentTag = tags.find(tag=>tag.id===e.tag)
+            tags = [...state.tags]
+            tags.forEach(e=>{
+                e.tasksId=[]
+            })
+            events.forEach(e => {
+                let currentTag = tags.find(tag => tag.id === e.tag)
                 currentTag.tasksId.push(e.id)
             })
-            return {...state,
-                events:events,
-                tags:tags,
-                currentTrip: action.payload.currentTrip}
+            console.log(action.payload)
+            return trips !== undefined
+                ? { ...state, events: events, tags: tags, currentTrip: action.payload.trips[0].id, trips }
+                : { ...state, events: events, tags: tags, currentTrip: action.payload.currentTrip }
         default:
             return { ...state }
     }

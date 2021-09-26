@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Container } from "react-bootstrap";
 import { } from '../redux/actions/frontActions'
-import DraggableDiv from './eventManager/DropableDiv'
+import DropableDiv from './eventManager/DropableDiv'
 import Event from './eventManager/Event'
 import { changeEventTag, getAllTag } from '../redux/actions/eventActions'
 import { DragDropContext } from "react-beautiful-dnd"
@@ -50,7 +50,7 @@ let EventTable = (props) => {
                     <DragDropContext onDragEnd={ondragend}>
                         {Object.keys(tags).map((e, i) => {
                             return (
-                                <DraggableDiv key={i} color={colors[i]} addButton={i === 0} title={tags[e].name} droppableId={e} >
+                                <DropableDiv key={i} color={colors[i]} addButton={i === 0} title={tags[e].name} droppableId={e} >
                                     {
                                         tags[e].tasksId.map((taskId, index) => {
                                             let currentEvent = events.find(e => e.id === taskId)
@@ -62,7 +62,7 @@ let EventTable = (props) => {
                                                 eventId={taskId}
                                             />
                                         })}
-                                </DraggableDiv>)
+                                </DropableDiv>)
                         })}
                     </DragDropContext>
                 </div >

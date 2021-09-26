@@ -43,14 +43,14 @@ let TravelSelector = (props) => {
             tripname.current.value = ""
             tripdesc.current.value = ""
         }
-        console.log(trips)
     }, [currentTrip, trips])
     let handletripsChange = (e)=>{
         e.preventDefault();
+        console.log(currentTrip)
         changeTripInfo({
             name:tripname.current.value,
             desc:tripdesc.current.value,
-            currentTrip:trips[currentTrip].id,
+            currentTrip:currentTrip.currentTrip,
             currentUser
         })
         setOpen(!open)
@@ -70,12 +70,14 @@ let TravelSelector = (props) => {
                                 text={"info" === 'light' ? 'dark' : 'white'}
                                 style={{ width: '18rem' }}
                                 className="mb-2"
-                                onClick={() => { setTrip(trip.id) }}
+                                onClick={() => {setTrip(trip.id) }}
                                 key={index}
                             >
                                 <Card.Body>
                                     <Card.Title>{trip.name} <Button variant="link"
-                                        onClick={() => { setOpen(!open); }}
+                                        onClick={() => { 
+                                            setOpen(!open); 
+                                        }}
                                     ><FaPen /></Button> </Card.Title>
                                     <Card.Text>
                                         {trip.desc.length > 35 ? ` ${trip.desc.substring(0, 32)}...` : `${trip.desc}`}

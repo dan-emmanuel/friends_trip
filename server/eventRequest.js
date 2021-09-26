@@ -2,9 +2,8 @@ const { db } = require("./dbCon.js")
 
 const UPDATE_TRIP = async (req, res) => {
     let body = req.body
-    console.log(body)
-
     try {
+
         if (body.currentTrip === undefined) {
             let maxGroupIdreq = await db('group').max('groupId', { as: 'maxGroupId' })
             let maxGroupId = maxGroupIdreq[0].maxGroupId == null
@@ -12,20 +11,23 @@ const UPDATE_TRIP = async (req, res) => {
                 : maxGroupIdreq[0].maxGroupId + 1
             await db('group')
                 .insert({ user_id: body.currentUser.id, manager: true, groupId: maxGroupId })
-            await db('holliday').insert({
+            let newHolliday  = await db('holliday')
+            .returning(['id',"name","desc"])
+            .insert({
                 groupId: maxGroupId,
                 name: body.name,
                 desc: body.desc
             })
-            res.end(JSON.stringify({ success: true }))
+            res.end(JSON.stringify({ success: true,action:"create",newTrip:newHolliday }))
         } else {
-            console.log(body.currentTrip)
+            
             await db('holliday').where({ 'id': body.currentTrip })
                 .update({
                     name: body.name,
                     desc: body.desc
                 })
-            res.end(JSON.stringify({ success: true }))
+
+            res.end(JSON.stringify({ success: true,action:"update" }))
         }
 
     } catch (error) {
@@ -54,14 +56,14 @@ const GET_ALL_TRIP = async (req, res) => {
 }
 const GET_ALL_EVENTS = async (req, res) => {
     let body = req.body
-    console.log(body.tripId)
+    console.log(body)
 
     try {
         if (body.tripId) {
             let eventsRequest = await db('events')
                 .select()
                 .where('holliday_id', body.tripId)
-            console.log(body.tripId)
+            console.log(eventsRequest)
             res.end(JSON.stringify({ success: true, events: eventsRequest }))
         } else {
             res.end(JSON.stringify({ success: true, events: [] }))

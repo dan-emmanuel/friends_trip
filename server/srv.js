@@ -17,6 +17,8 @@ app.post("/updateTrip",eventRequest.UPDATE_TRIP)
 app.post("/getAllTrips",eventRequest.GET_ALL_TRIP)
 app.post("/getTag",eventRequest.GET_TAG)
 app.post("/getAllEvents",eventRequest.GET_ALL_EVENTS)
+app.post("/newEvent",eventRequest.CREATE_NEW_EVENT)
+
 
 
 

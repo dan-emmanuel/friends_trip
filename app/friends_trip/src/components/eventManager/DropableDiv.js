@@ -4,7 +4,11 @@ import {Button} from "react-bootstrap";
 import { connect } from "react-redux";
 import {newEvent} from '../../redux/actions/eventActions'
 let DropableDiv = (props) => {
-    let {newEvt} = props
+    let {newEvt,events} = props
+    let createNewEvt = (e)=>{
+        console.log(events.currentTrip)
+        newEvt(events.currentTrip)
+    }
     return (
 
         <Droppable droppableId={props.droppableId}>
@@ -14,7 +18,7 @@ let DropableDiv = (props) => {
                     {...provider.droppableProps}
                     ref={provider.innerRef}>
                     <div className="card-header d-flex justify-content-between">
-                        <span>{props.title}</span>  {props.addButton&&<Button onClick={newEvt} variant="outline-light">+    </Button>}
+                        <span>{props.title}</span>  {props.addButton&&<Button onClick={createNewEvt} variant="outline-light">+    </Button>}
                     </div>
                     <div className="card-body">
                         {props.children}
@@ -40,7 +44,7 @@ let mapStateToProps = (({ front, events }) => {
 })
 let mapDispatchToProps = (dispatch => {
     return {
-        newEvt:()=>dispatch(newEvent())
+        newEvt:(e)=>dispatch(newEvent(e))
     };
 })
 export default connect(mapStateToProps, mapDispatchToProps)(DropableDiv);

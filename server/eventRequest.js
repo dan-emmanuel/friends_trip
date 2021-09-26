@@ -11,23 +11,23 @@ const UPDATE_TRIP = async (req, res) => {
                 : maxGroupIdreq[0].maxGroupId + 1
             await db('group')
                 .insert({ user_id: body.currentUser.id, manager: true, groupId: maxGroupId })
-            let newHolliday  = await db('holliday')
-            .returning(['id',"name","desc"])
-            .insert({
-                groupId: maxGroupId,
-                name: body.name,
-                desc: body.desc
-            })
-            res.end(JSON.stringify({ success: true,action:"create",newTrip:newHolliday }))
+            let newHolliday = await db('holliday')
+                .returning(['id', "name", "desc"])
+                .insert({
+                    groupId: maxGroupId,
+                    name: body.name,
+                    desc: body.desc
+                })
+            res.end(JSON.stringify({ success: true, action: "create", newTrip: newHolliday }))
         } else {
-            
+
             await db('holliday').where({ 'id': body.currentTrip })
                 .update({
                     name: body.name,
                     desc: body.desc
                 })
 
-            res.end(JSON.stringify({ success: true,action:"update" }))
+            res.end(JSON.stringify({ success: true, action: "update" }))
         }
 
     } catch (error) {
@@ -56,14 +56,11 @@ const GET_ALL_TRIP = async (req, res) => {
 }
 const GET_ALL_EVENTS = async (req, res) => {
     let body = req.body
-    console.log(body)
-
     try {
         if (body.tripId) {
             let eventsRequest = await db('events')
                 .select()
                 .where('holliday_id', body.tripId)
-            console.log(eventsRequest)
             res.end(JSON.stringify({ success: true, events: eventsRequest }))
         } else {
             res.end(JSON.stringify({ success: true, events: [] }))
@@ -86,15 +83,30 @@ const GET_TAG = async (req, res) => {
 }
 const CREATE_NEW_EVENT = async (req, res) => {
     let body = req.body
+    console.log(body)
+
     try {
-        await db('events')
-            .insert({
-                groupId: maxGroupId,
-                name: body.name,
-                desc: body.desc
-            })
+        let usergroup = await db('holliday').select("groupId").where("id", body.tripId)
+        let groupId = usergroup[0].groupId
+        let users = await db('group').select("user_id").where("groupId", groupId)
+        let userobj = JSON.stringify( users.map(e => {
+            return {
+                id: e.user_id,
+                mates: false
+            }
+        }))
+        let newevent = {
+            holliday_id: body.tripId,
+            name: "new event",
+            mates:userobj,
+            tag:1
+        }
+        let insertedInfo = await db('events').returning(["id","name","mates","tag"]).insert(newevent)
+        res.end(JSON.stringify({ success: true, newEvent: insertedInfo[0] }))
+
     } catch (error) {
         console.log(error)
+
     }
 }
 const CHANGE_EVENT_TAG = (req, res) => {
@@ -103,9 +115,7 @@ const CHANGE_EVENT_TAG = (req, res) => {
 const CHANGE_TRIP_INFO = (req, res) => {
 
 }
-const NEW_EVENT = (req, res) => {
 
-}
 const MAKE_LI_CHECKED = (req, res) => {
 
 }
@@ -128,7 +138,6 @@ const CHECKMATE_ON_EVENT = (req, res) => {
 module.exports = {
     CHANGE_EVENT_TAG,
     CHANGE_TRIP_INFO,
-    NEW_EVENT,
     MAKE_LI_CHECKED,
     NEW_LI,
     NEW_SUB_EVENT,

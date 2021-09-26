@@ -34,12 +34,16 @@ export const newEvent = (e) => async (dispatch) => {
             url: `${process.env.REACT_APP_SRV_URL}newEvent`,
             data: { tripId: e }
         });
-        console.log(newEvents)
+        dispatch( {
+            type: NEW_EVENT,
+            payload: newEvents.data
+        })
     } catch (error) {
         
     }
 }
 export const setCurrentEventId = (e) => {
+    console.log(e)
     return {
         type: SET_CURRENT_EVENT_ID,
         payload: e

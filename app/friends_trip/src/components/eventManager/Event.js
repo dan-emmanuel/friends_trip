@@ -32,6 +32,7 @@ let mapStateToProps = (({ front, events }) => {
 let mapDispatchToProps = (dispatch => {
     return {
         setLgShow:(e)=>{
+            console.log(e)
             dispatch(openCloseEventModal(true))
             dispatch(setCurrentEventId(e))
         }

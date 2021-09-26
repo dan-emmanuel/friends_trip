@@ -154,11 +154,10 @@ export const eventsReducer = (state = initState, action) => {
             tags = {
                 ...state.tags
             }
-            let nextId = state.events.length
-            tags.ideas.tasksId.push(nextId)
+            console.log(action.payload)
+            tags[0].tasksId.push(action.payload.newEvent.id)
             events = [...state.events]
-            events.push({ id: nextId, title: "new event", dbId: undefined })
-            console.log(2)
+            events.push(action.payload.newEvent)
             return { ...state, events: events, tags: tags }
         case SET_CURRENT_EVENT_ID:
             console.log(3)

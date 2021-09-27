@@ -2,7 +2,7 @@ import React, { } from "react";
 import { connect } from "react-redux";
 import { Modal, ListGroup, Form, Tab, Row, Col, Button, FormControl } from "react-bootstrap";
 import { openCloseEventModal } from '../../../redux/actions/frontActions'
-import { setCurrentSubEventId, newSubEvent,checkMateOnEvent } from '../../../redux/actions/eventActions'
+import { setCurrentSubEventId, newSubEvent, checkMateOnEvent } from '../../../redux/actions/eventActions'
 
 
 import ListeManager from "./ListeManager"
@@ -39,7 +39,6 @@ let ModalEvent = (props) => {
         e.preventDefault()
         newSubEvent({ name: e.target[0].value, type: e.target[1].value })
     }
-
     return (
         <>
             <Modal
@@ -51,7 +50,11 @@ let ModalEvent = (props) => {
             >
                 <Modal.Header closeButton >
                     <Modal.Title id="example-modal-sizes-title-lg">
-                        <input defaultValue={events[currentEvent] ? events[currentEvent].title : ""}></input>
+                        <input defaultValue={
+                            events.find(e => e.id === currentEvent)
+                                ? events.find(e => e.id === currentEvent).name
+                                : ""}>
+                        </input>
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body className="" style={{ minHeight: "80vh" }}>
@@ -97,8 +100,8 @@ let ModalEvent = (props) => {
                                                         type="switch"
                                                         id="custom-switch"
                                                         checked={user.mate}
-                                                        disabled={user.name!==currentUser.name}
-                                                        onChange={(e)=>{checkMate({mateid:currentUser.id,value:e.target.checked})}}
+                                                        disabled={user.name !== currentUser.name}
+                                                        onChange={(e) => { checkMate({ mateid: currentUser.id, value: e.target.checked }) }}
                                                     />
 
                                                 </div>
@@ -149,7 +152,7 @@ let mapDispatchToProps = (dispatch => {
         setLgShow: () => dispatch(openCloseEventModal(false)),
         setCurrentSubEventId: (index) => dispatch(setCurrentSubEventId(index)),
         newSubEvent: ({ type, name }) => dispatch(newSubEvent({ type, name })),
-        checkMate:({mateid,value})=>dispatch(checkMateOnEvent({ mateid,value }))
+        checkMate: ({ mateid, value }) => dispatch(checkMateOnEvent({ mateid, value }))
     }
 
 })

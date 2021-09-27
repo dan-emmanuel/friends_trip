@@ -83,8 +83,6 @@ const GET_TAG = async (req, res) => {
 }
 const CREATE_NEW_EVENT = async (req, res) => {
     let body = req.body
-    console.log(body)
-
     try {
         let usergroup = await db('holliday').select("groupId").where("id", body.tripId)
         let groupId = usergroup[0].groupId
@@ -109,13 +107,24 @@ const CREATE_NEW_EVENT = async (req, res) => {
 
     }
 }
-const CHANGE_EVENT_TAG = (req, res) => {
+const CHANGE_EVENT_TAG =async(req, res) => {
+    let body = req.body
+    try {
+        console.log(body)
+        
+        await db('events').where({ 'id': body.eventId })
+        .update({
+            tag: body.destination,
+        })
 
+    res.end(JSON.stringify({ success: true, action: "update" }))
+    } catch (error) {
+        
+    }
 }
 const CHANGE_TRIP_INFO = (req, res) => {
 
 }
-
 const MAKE_LI_CHECKED = (req, res) => {
 
 }

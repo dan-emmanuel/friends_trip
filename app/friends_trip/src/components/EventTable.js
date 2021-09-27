@@ -24,7 +24,6 @@ let EventTable = (props) => {
             source: { id: source.droppableId, positionRemove: source.index },
             destination: { id: destination.droppableId, positionInsert: destination.index }
         })
-
     }
     let colors = ["primary", "secondary", "success"]
 
@@ -40,7 +39,10 @@ let EventTable = (props) => {
     }, []);
 
 
-
+    useEffect(() => {
+        console.log(tags)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [tags]);
 
     return (
         <>
@@ -48,12 +50,15 @@ let EventTable = (props) => {
             <Container className="mt-4 mb-4">
                 <div className="d-flex justify-content-between">
                     <DragDropContext onDragEnd={ondragend}>
-                        {Object.keys(tags).map((e, i) => {
+                        {tags.map((tag, i) => {
+
                             return (
-                                <DropableDiv key={i} color={colors[i]} addButton={i === 0} title={tags[e].name} droppableId={e} >
+                                <DropableDiv key={i} color={colors[i]} addButton={i === 0} title={tag.name} droppableId={`${tag.id}`} >
                                     {
-                                        tags[e].tasksId.map((taskId, index) => {
-                                            let currentEvent = events.find(e => e.id === taskId)
+                                        tag.tasksId.map((taskId, index) => {
+                                            let currentEvent = events.find(e => e.id === parseInt(taskId))
+                                   
+
                                             return <Event
                                                 draggableId={`${taskId}`}
                                                 key={taskId}

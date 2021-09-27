@@ -124,10 +124,14 @@ export const eventsReducer = (state = initState, action) => {
     let tags, subEvents, events, trips
     switch (action.type) {
         case CHANGE_EVENT_TAG:
-            tags = { ...state.tags }
-            tags[action.payload.source.id].tasksId.splice(action.payload.source.positionRemove, 1)
-            tags[action.payload.destination.id].tasksId.splice(action.payload.destination.positionInsert, 0, action.payload.event)
-            console.log(0)
+            tags = [...state.tags]
+            events = [...state.events]
+            let currentEvent = (events.find(e => e.id === parseInt(action.payload.event)))
+            currentEvent.tag = action.payload.destination.id
+            let formerTag = tags.find(e=>e.id===parseInt(action.payload.source.id))
+            let newTag = tags.find(e=>e.id===parseInt(action.payload.destination.id))
+            formerTag.tasksId.splice(action.payload.source.positionRemove, 1)
+            newTag.tasksId.splice(action.payload.destination.positionInsert, 0, action.payload.event)
             return { ...state, tags: tags }
         case CHANGE_TRIP_INFO:
 
@@ -138,9 +142,9 @@ export const eventsReducer = (state = initState, action) => {
                 tripToChange = { ...tripToChange, ...{ ...action.payload.tripData } }
                 trips = trips.map(
                     e => {
-                        return e.id===state.currentTrip
-                        ?tripToChange
-                        :e
+                        return e.id === state.currentTrip
+                            ? tripToChange
+                            : e
                     }
 
                 )
@@ -161,7 +165,7 @@ export const eventsReducer = (state = initState, action) => {
             return { ...state, events: events, tags: tags }
         case SET_CURRENT_EVENT_ID:
             console.log(3)
-
+            console.log(action.payload)
             return { ...state, currentEvent: action.payload }
         case SET_CURRENT_SUB_EVENT_ID:
             console.log(4)
@@ -239,8 +243,8 @@ export const eventsReducer = (state = initState, action) => {
             trips = action.payload.trips
             events = [...action.payload.events]
             tags = [...state.tags]
-            tags.forEach(e=>{
-                e.tasksId=[]
+            tags.forEach(e => {
+                e.tasksId = []
             })
             events.forEach(e => {
                 let currentTag = tags.find(tag => tag.id === e.tag)

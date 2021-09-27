@@ -20,11 +20,24 @@ export const SET_CURRENT_TRIP_ID = "SET_CURRENT_TRIP_ID"
 
 
 
-export const changeEventTag = (obj) => {
-    return {
-        type: CHANGE_EVENT_TAG,
-        payload: obj
+export const changeEventTag = (obj) => async (dispatch) => {
+    try {
+        console.log(obj)
+        let tagsInfo = {eventId:obj.event,destination:obj.destination.id}
+        let succedUpdate = await axios({
+            method: 'post',
+            url: `${process.env.REACT_APP_SRV_URL}changeEventTag`,
+            data: tagsInfo
+        });
+        console.log()
+        dispatch( {
+            type: CHANGE_EVENT_TAG,
+            payload: obj
+        })
+    } catch (error) {
+        
     }
+    
 }
 export const newEvent = (e) => async (dispatch) => {
     // title: "new event"
@@ -43,7 +56,6 @@ export const newEvent = (e) => async (dispatch) => {
     }
 }
 export const setCurrentEventId = (e) => {
-    console.log(e)
     return {
         type: SET_CURRENT_EVENT_ID,
         payload: e
@@ -56,8 +68,6 @@ export const setCurrentSubEventId = (e) => {
     }
 }
 export const setCurrentTrip = (e) => async (dispatch) => {
-    console.log(e)
-
     if (e !== undefined) {
         try {
             let events = await axios({

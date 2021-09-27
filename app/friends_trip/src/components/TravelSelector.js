@@ -46,7 +46,6 @@ let TravelSelector = (props) => {
     }, [currentTrip, trips])
     let handletripsChange = (e)=>{
         e.preventDefault();
-        console.log(currentTrip)
         changeTripInfo({
             name:tripname.current.value,
             desc:tripdesc.current.value,

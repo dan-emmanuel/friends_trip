@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { connect } from "react-redux";
 import { ListGroup, ProgressBar, Collapse, Button, Form, InputGroup, FormControl } from "react-bootstrap";
 import { makeLiChecked,newLi } from "../../../redux/actions/eventActions"
@@ -10,7 +10,17 @@ let ListManager = (props) => {
         subEvents,
         newLi
     } = props
+    useEffect(() => {
+        console.log(subEvents[index])
+        console.log("item",subEvents[index].items!==undefined)
+        console.log('type',subEvents[index].type)
+        console.log("index",subEvents[index] !== undefined)
 
+
+        
+
+
+      },[subEvents]);
     let changeCheckBoxVal = (e, index) => {
         let value = e.currentTarget.checked
 
@@ -22,10 +32,10 @@ let ListManager = (props) => {
     }
     let newListItem = (e)=>{
         e.preventDefault()
-        newLi(e.target[0].value)
+        newLi({text:e.target[0].value,id:subEvents[index].id})
         setOpen(!open)
     }
-    
+   
     const now = subEvents[index].items!==undefined
     ?subEvents[index].items.filter(e => e.done).length / subEvents[index].items.length * 100
     :0
@@ -37,10 +47,11 @@ let ListManager = (props) => {
         <>
             <ListGroup variant="flush">
                 {
-                    subEvents[index] !== undefined && subEvents[index].type === "list"&& subEvents[index].items!==undefined
+            
+                    subEvents[index] !== undefined && parseInt(subEvents[index].type) === 1 && subEvents[index].items!==undefined
                         ? subEvents[index].items.map((li, index) => {
                             return <ListGroup.Item key={index}>
-                                <input type="checkbox" onChange={(e) => changeCheckBoxVal(e, index)} checked={li.done} className="me-2" />
+                                <input type="checkbox" onChange={(e) => changeCheckBoxVal(e, li.id)} checked={li.done} className="me-2" />
                                 {li.text}
                             </ListGroup.Item>
                         })
@@ -57,7 +68,7 @@ let ListManager = (props) => {
                                 aria-describedby="basic-addon2"
                             />
                             <Button type="submit" variant="outline-secondary" >
-                                Button
+                                add it
                             </Button>
                         </InputGroup>
                     </Form>
@@ -92,7 +103,7 @@ let mapDispatchToProps = (dispatch => {
             id: target,
             checked: val
         })),
-        newLi:text=>dispatch(newLi(text))
+        newLi:obj=>dispatch(newLi(obj))
     }
 })
 export default connect(mapStateToProps, mapDispatchToProps)(ListManager);

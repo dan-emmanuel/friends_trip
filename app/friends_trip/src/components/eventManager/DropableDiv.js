@@ -6,7 +6,6 @@ import {newEvent} from '../../redux/actions/eventActions'
 let DropableDiv = (props) => {
     let {newEvt,events} = props
     let createNewEvt = (e)=>{
-        console.log(events.currentTrip)
         newEvt(events.currentTrip)
     }
     return (

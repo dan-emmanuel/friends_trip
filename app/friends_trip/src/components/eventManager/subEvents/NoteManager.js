@@ -1,26 +1,37 @@
-import React, {  } from "react";
+import React, { useRef } from "react";
 import { connect } from "react-redux";
 import { FloatingLabel, Form } from "react-bootstrap";
-import { updateNoteText, updateNoteName } from "../../../redux/actions/eventActions"
+import { changeNote } from "../../../redux/actions/eventActions"
 let NoteManager = (props) => {
     let {
-
-        changeNoteName,
-        changeNoteText,
+        changeNote,
         index,
         subEvents,
     } = props
- 
+    const noteName = useRef()
+    const noteText = useRef()
+
+    let changeNotEvnt = () => {
+        changeNote({
+            noteId : subEvents[index].id,
+            name:noteName.current.value,
+            text:noteText.current.value
+        })
+    }
+
     return (
         <>
             <div className="my-2">
                 <Form.Group className="mb-3" >
                     <Form.Label>Note name</Form.Label>
                     <Form.Control
-                        value={subEvents[index].name}
+                        defaultValue={subEvents[index].name}
                         type="text"
                         placeholder="name@example.com"
-                        onChange = {(e)=>changeNoteName(e.target.value)}
+                        onChange={() => { }}
+                        onBlur={(e) => changeNotEvnt()}
+                        ref={noteName}
+
                     />
                 </Form.Group>
                 <FloatingLabel label="text">
@@ -28,8 +39,11 @@ let NoteManager = (props) => {
                         as="textarea"
                         placeholder="Leave a comment here"
                         style={{ height: '100px' }}
-                        value={subEvents[index].text}
-                        onChange = {(e)=>changeNoteText(e.target.value)}
+                        defaultValue={subEvents[index].text}
+                        onChange={() => { }}
+                        onBlur={(e) => changeNotEvnt()}
+                        ref={noteText}
+
                     />
                 </FloatingLabel>
 
@@ -50,8 +64,7 @@ let mapStateToProps = (({ front, events }) => {
 })
 let mapDispatchToProps = (dispatch => {
     return {
-        changeNoteName: (e) => dispatch(updateNoteName(e)),
-        changeNoteText: (e) => dispatch(updateNoteText(e))
+        changeNote: (e) => dispatch(changeNote(e)),
     }
 })
 export default connect(mapStateToProps, mapDispatchToProps)(NoteManager);

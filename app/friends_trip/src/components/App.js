@@ -25,10 +25,22 @@ function App(props) {
           <Route path="/login">
             <Signin />
           </Route>
-          <Route path="/home">
+          <Route path="/event/event">
             <Home />
           </Route>
-
+          <Route path="/event/calendar">
+            <Home />
+          </Route>
+          <Route path="/event/map">
+            <Home />
+          </Route>
+          <Route path="/event/bill">
+            <Home />
+          </Route>
+          <Route path="/event/params">
+            <Home />
+          </Route>
+ 
         </Switch>
       </Shell>
 

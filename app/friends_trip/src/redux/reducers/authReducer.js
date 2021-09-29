@@ -34,17 +34,19 @@ const authReducer = (state = initState, action) => {
                 ...state,
                 signInErrorMessage: null,
                 signInSucceed: true,
-                currentUser: { ...state.currentUser, name: action.payload.name,id:action.payload.id }
+                currentUser: { ...state.currentUser, name: action.payload.name, id: action.payload.id }
             }
         case SIGN_IN_ERROR:
             return { ...state, signInErrorMessage: action.payload }
         case SIGN_OUT_SUCCESS:
-            return { ...state, currentUser: {},
-            signUpSucceed: false,
-            signupErrorMessage: null,
-            signInErrorMessage: null,
-            signInSucceed: false
-         }
+            return {
+                ...state,
+                currentUser: {},
+                signUpSucceed: false,
+                signupErrorMessage: null,
+                signInErrorMessage: null,
+                signInSucceed: false
+            }
         default:
             return { ...state }
     }

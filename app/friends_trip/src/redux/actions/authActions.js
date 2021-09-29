@@ -9,6 +9,7 @@ export const SIGN_IN_ERROR = "SIGN_IN_ERROR"
 export const SIGN_OUT_SUCCESS = "SIGN_OUT_SUCCESS"
 
 
+
 export const signUpAction = ({ mail, password, userName }) => async (dispatch) => {
     try {
         let newUser = await auth.createUserWithEmailAndPassword(mail, password)
@@ -36,6 +37,7 @@ export const signInAction = ({ mail, password }) => async (dispatch) => {
     try {
         let user = await auth.signInWithEmailAndPassword(mail, password)
         let uuid = user.user.uid
+        console.log(uuid)
         let userDatas = await axios({
             method: 'post',
             url: `${process.env.REACT_APP_SRV_URL}signIn`,
@@ -55,7 +57,7 @@ export const signOutAction = () => async (dispatch) => {
     try {
         await auth.signOut()
         dispatch({ type: SIGN_OUT_SUCCESS })
-
+        
     } catch (error) {
         console.log(error)
     }

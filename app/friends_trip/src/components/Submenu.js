@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React  from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 import { FaTicketAlt, FaMoneyBillWave, FaMapMarked } from "react-icons/fa";
 import { AiFillCalendar } from "react-icons/ai";
@@ -11,43 +12,47 @@ import { Container } from "react-bootstrap";
 import {changeSubMenu} from '../redux/actions/frontActions'
 let Submenu = (props) => {
     const {currentSubMenu,changeSubMenu} = props
-
+   
     return (
         <>
             <Container className="mt-4">
                 <div className="d-flex justify-content-around">
-                    <a href="#"
+                    <Link
+                        to="/event/event"
                         onClick={changeSubMenu}
                         data-target="events"
-                        className={`link-secondary fs-2 ${currentSubMenu==="events"?"selected":""}`} >
+                        className={` fs-2 ${currentSubMenu==="events"?"link-prymary":"link-secondary"}`} >
                         <FaTicketAlt />
-                    </a>
-                    <a href="#"
+                    </Link>
+                    <Link
+                        to="/event/calendar"
                         onClick={changeSubMenu}
                         data-target="calendar"
-                        className={`link-secondary fs-2  ${currentSubMenu==="calendar"?"selected":""}`}>
+                        className={`fs-2  ${currentSubMenu==="calendar"?"link-prymary":"link-secondary"}`}>
                         <AiFillCalendar />
-                    </a>
-                    <a href="#"
+                    </Link>
+                    <Link
+                        to="/event/map"
                         onClick={changeSubMenu}
                         data-target="map"
-
-                        className={`link-secondary fs-2  ${currentSubMenu==="map"?"selected":""}`}>
+                        className={`fs-2  ${currentSubMenu==="map"?"link-prymary":"link-secondary"}`}>
                         <FaMapMarked />
-                    </a>
-                    <a href="#"
+                    </Link>
+                    <Link
+                        to="/event/bill"
                         onClick={changeSubMenu}
                         data-target="bill"
 
-                        className={`link-secondary fs-2  ${currentSubMenu==="bill"?"selected":""}`}>
+                        className={`fs-2  ${currentSubMenu==="bill"?"link-prymary":"link-secondary"}`}>
                         <FaMoneyBillWave />
-                    </a>
-                    <a href="#"
+                    </Link>
+                    <Link
+                        to="/event/params"
                         onClick={changeSubMenu}
                         data-target="params"
-                        className={`link-secondary fs-2  {selected}`}>
+                        className={`fs-2  ${currentSubMenu==="params"?"link-prymary":"link-secondary"}`}>
                         <BsFillGearFill />
-                    </a>
+                    </Link>
                 </div >
             </Container >
 
@@ -61,6 +66,7 @@ let mapStateToProps = (({front}) => {
     };
 })
 let mapDispatchToProps = (dispatch => {
+    
     return {
         changeSubMenu: (e) => dispatch(changeSubMenu(e.currentTarget.dataset.target)),
     };

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Navbar, Button, Container } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { signOutAction } from "../redux/actions/authActions"
-import {getAllTrips} from "../redux/actions/eventActions"
+import {getAllTrips,removeAll} from "../redux/actions/eventActions"
 import { IoLogOut } from "react-icons/io5";
 
 let Header = (props) => {
@@ -14,6 +14,12 @@ let Header = (props) => {
         getAllTrips(currentUser.id)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[]);
+
+    let signOut = async()=>{
+        await signOutAction()
+        removeAll()
+    }
+  
     return (
         <>
             {
@@ -23,7 +29,7 @@ let Header = (props) => {
                         <Navbar.Brand href="#">My Friends Trip</Navbar.Brand>
                         <div className="d-flex align-items-center">
                             <div className="me-2">bonjour {currentUser.name}</div>
-                            <Button variant="outline-danger" onClick={signOutAction} className="border-0">
+                            <Button variant="outline-danger" onClick={()=>signOut()} className="border-0">
                                 <IoLogOut />
                             </Button>
                         </div>
@@ -44,6 +50,7 @@ let mapDispatchToProps = (dispatch => {
     return {
         signOutAction: () => { dispatch(signOutAction()) },
         getAllTrips:(e)=>dispatch(getAllTrips(e)),
+        removeAll:(e)=>dispatch(removeAll())
     };
 })
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

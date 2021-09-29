@@ -25,7 +25,7 @@ let Signin = (props) => {
     return (
         <>
         {signInSucceed
-        ?<Redirect push to="/home" />
+        ?<Redirect push to="/event/event" />
         :<>
             <Container className="d-flex align-items-center justify-content-center" style={{ minHeight: "100vh" }} >
                 <div className="w-100" style={{ maxWidth: "400px" }}>
@@ -50,7 +50,7 @@ let Signin = (props) => {
                             </Card.Body>
                         </Card>
                         <div className="w-100 text-center mt-2">
-                            <span className="me-1">no account yet ?</span><Link to="/Signup">Sign Up</Link>
+                            <span className="me-1">no account yet ?</span><Link to="/signup">Sign Up</Link>
 
                         </div>
                 </div>

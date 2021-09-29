@@ -19,6 +19,22 @@ app.post("/getTag",eventRequest.GET_TAG)
 app.post("/getAllEvents",eventRequest.GET_ALL_EVENTS)
 app.post("/newEvent",eventRequest.CREATE_NEW_EVENT)
 app.post("/changeEventTag",eventRequest.CHANGE_EVENT_TAG)
+app.post("/changeEventName",eventRequest.CHANGE_EVENT_NAME)
+app.post("/newSubEvent",eventRequest.NEW_SUB_EVENT)
+app.post("/getAllSubEvents",eventRequest.GET_ALL_SUB_EVENTS)
+app.post("/setNewLi",eventRequest.NEW_LI)
+app.post("/changeLi",eventRequest.CHANGE_LI)
+app.post("/updateNote",eventRequest.NOTE_TEXT_MANAGE)
+app.post("/getUsers",eventRequest.GET_USERS)
+app.post("/addNewUserToTrip",eventRequest.ADD_USER_TO_TRIP)
+
+
+
+
+
+
+
+
 
 
 

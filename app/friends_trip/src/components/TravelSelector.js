@@ -49,7 +49,7 @@ let TravelSelector = (props) => {
         changeTripInfo({
             name:tripname.current.value,
             desc:tripdesc.current.value,
-            currentTrip:currentTrip.currentTrip,
+            currentTrip:currentTrip,
             currentUser
         })
         setOpen(!open)
@@ -65,12 +65,13 @@ let TravelSelector = (props) => {
                     <Carousel className="mt-1" responsive={responsive}>
                         {trips.map((trip, index) => {
                             return <Card
-                                bg={"info"}
-                                text={"info" === 'light' ? 'dark' : 'white'}
-                                style={{ width: '18rem' }}
+                                bg={currentTrip===trip.id?"info":"light"}
+                                text={currentTrip===trip.id ? 'white' : 'dark'}
+                                style={{ width: '18rem',cursor:"pointer" }}
                                 className="mb-2"
                                 onClick={() => {setTrip(trip.id) }}
                                 key={index}
+
                             >
                                 <Card.Body>
                                     <Card.Title>{trip.name} <Button variant="link"
@@ -142,11 +143,10 @@ let mapStateToProps = (({ events,auth }) => {
     };
 })
 let mapDispatchToProps = (dispatch => {
-
     return {
-        setCurrentTrip: (id) => { dispatch(setCurrentTrip(id)) },
+        setCurrentTrip: (id) => {     console.log(id);dispatch(setCurrentTrip(id)) },
         changeTripInfo: (tripInfo) => { dispatch(changeTripInfo(tripInfo)) },
-
+        
     };
 })
 export default connect(mapStateToProps, mapDispatchToProps)(TravelSelector);

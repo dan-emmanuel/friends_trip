@@ -13,7 +13,8 @@ let EventTable = (props) => {
         events,
         tags,
         changeEventTag,
-        getAllTag
+        getAllTag,
+        trips
     } = props
     let ondragend = result => {
         const { destination, source, draggableId } = result
@@ -39,10 +40,6 @@ let EventTable = (props) => {
     }, []);
 
 
-    useEffect(() => {
-        console.log(tags)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [tags]);
 
     return (
         <>
@@ -50,25 +47,27 @@ let EventTable = (props) => {
             <Container className="mt-4 mb-4">
                 <div className="d-flex justify-content-between">
                     <DragDropContext onDragEnd={ondragend}>
-                        {tags.map((tag, i) => {
+                        {
+                            trips.length > 0
+                                ? tags.map((tag, i) => {
 
-                            return (
-                                <DropableDiv key={i} color={colors[i]} addButton={i === 0} title={tag.name} droppableId={`${tag.id}`} >
-                                    {
-                                        tag.tasksId.map((taskId, index) => {
-                                            let currentEvent = events.find(e => e.id === parseInt(taskId))
-                                   
-
-                                            return <Event
-                                                draggableId={`${taskId}`}
-                                                key={taskId}
-                                                index={index}
-                                                text={currentEvent.name}
-                                                eventId={taskId}
-                                            />
-                                        })}
-                                </DropableDiv>)
-                        })}
+                                    return (
+                                        <DropableDiv key={i} color={colors[i]} addButton={i === 0} title={tag.name} droppableId={`${tag.id}`} >
+                                            {
+                                                tag.tasksId.map((taskId, index) => {
+                                                    let currentEvent = events.find(e => e.id === parseInt(taskId))
+                                                    return <Event
+                                                        draggableId={`${taskId}`}
+                                                        key={taskId}
+                                                        index={index}
+                                                        text={currentEvent.name}
+                                                        eventId={taskId}
+                                                    />
+                                                })}
+                                        </DropableDiv>)
+                                })
+                                :null
+                        }
                     </DragDropContext>
                 </div >
             </Container >
@@ -84,9 +83,9 @@ let mapStateToProps = (({ front, events, }) => {
         currentSubEvent: events.currentSubEvent,
         tags: events.tags,
         lgShow: front.openEventModal,
-        subEvents: events.events[events.currentEvent]
-            ? events.events[events.currentEvent].subEvents
-            : undefined
+        trips: events.trips
+
+
     };
 })
 let mapDispatchToProps = (dispatch => {

@@ -1,8 +1,8 @@
-import React, { } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { Modal, ListGroup, Form, Tab, Row, Col, Button, FormControl } from "react-bootstrap";
 import { openCloseEventModal } from '../../../redux/actions/frontActions'
-import { setCurrentSubEventId, newSubEvent, checkMateOnEvent } from '../../../redux/actions/eventActions'
+import { setCurrentSubEventId, newSubEvent, checkMateOnEvent, changeEventName } from '../../../redux/actions/eventActions'
 
 
 import ListeManager from "./ListeManager"
@@ -18,14 +18,16 @@ let ModalEvent = (props) => {
         subEvents,
         setCurrentSubEventId,
         newSubEvent,
-        mates,
         currentUser,
-        checkMate
-
+        checkMate,
+        changeEventName,
+        subEventsTypes,
+        tripUser
     } = props
-
+    
     let subeventType = (subEvent, index) => {
-        switch (subEvent.type) {
+        let currentsubEvent = subEventsTypes.find(e => parseInt(e.id) === parseInt(subEvent.type))
+        switch (currentsubEvent.name) {
             case "list":
                 return <ListeManager index={index} />
             case "note":
@@ -37,7 +39,7 @@ let ModalEvent = (props) => {
     }
     let submitSubEvent = (e) => {
         e.preventDefault()
-        newSubEvent({ name: e.target[0].value, type: e.target[1].value })
+        newSubEvent({ name: e.target[0].value, type: e.target[1].value, eventId: currentEvent })
     }
     return (
         <>
@@ -53,7 +55,15 @@ let ModalEvent = (props) => {
                         <input defaultValue={
                             events.find(e => e.id === currentEvent)
                                 ? events.find(e => e.id === currentEvent).name
-                                : ""}>
+                                : ""}
+                            onBlur={(e) =>
+                                changeEventName(
+                                    {
+                                        eventId: events.find(e => e.id === currentEvent).id,
+                                        name: e.target.value
+                                    }
+                                )}>
+
                         </input>
                     </Modal.Title>
                 </Modal.Header>
@@ -64,7 +74,7 @@ let ModalEvent = (props) => {
                                 <ListGroup>
                                     {
                                         subEvents.map((subEvent, index) => {
-                                            return <ListGroup.Item onClick={() => setCurrentSubEventId(index)} key={index} action href={`#subEvent${index}`}>
+                                            return <ListGroup.Item onClick={() => setCurrentSubEventId(subEvent.id)} key={index} action href={`#subEvent${index}`}>
                                                 {subEvent.name}
                                             </ListGroup.Item>
 
@@ -79,8 +89,9 @@ let ModalEvent = (props) => {
                                             />
 
                                             <Form.Select required className="mt-1" aria-label="Default select example">
-                                                <option value="list">list</option>
-                                                <option value="text">text</option>
+                                                {subEventsTypes.map((e, i) => {
+                                                    return <option key={i} value={e.id}>{e.name}</option>
+                                                })}
                                             </Form.Select>
 
                                             <Button type="submit" className="col-12 mt-1"> Add that subEvent</Button>
@@ -89,23 +100,37 @@ let ModalEvent = (props) => {
                                     </ListGroup.Item>
                                     <ListGroup.Item >
                                         {
-                                            mates.map((user, index) => {
-                                                return <div key={index} className="d-flex align-items-baseline">
+
+                                            tripUser.map((user, index) => {
+                                                let thatevent = events.find(e=>e.id===currentEvent)
+                                                if(thatevent){
+                                                    console.log(user)
+                                                    let mates = thatevent.mates
+                                                    let thatMate = mates.find(e=>e.id===user.id)
+                                                    let ismate = thatMate&&thatMate.mates
+                                                    return <div key={index} className="d-flex align-items-baseline">
 
                                                     <span className="me-1">
                                                         <BiUserCircle />
                                                     </span>
-                                                    <span className="me-1"> {user.name}</span>
+                                                    <span className="me-1"> {user.username}</span>
                                                     <Form.Check className="col-auto "
                                                         type="switch"
                                                         id="custom-switch"
-                                                        checked={user.mate}
-                                                        disabled={user.name !== currentUser.name}
+                                                        checked={ismate}
+                                                        disabled={user.id !== currentUser.id}
                                                         onChange={(e) => { checkMate({ mateid: currentUser.id, value: e.target.checked }) }}
                                                     />
 
                                                 </div>
-                                            })}
+                                                }else{
+                                                    return null
+                                                }
+
+                                                // let mateChecked = mates
+                                                
+                                            })
+                                        }
                                     </ListGroup.Item>
 
                                 </ListGroup>
@@ -114,7 +139,6 @@ let ModalEvent = (props) => {
                                 <Tab.Content>
                                     {
                                         subEvents.map((subEvent, index) => {
-
                                             return <Tab.Pane key={index} eventKey={`#subEvent${index}`}>
                                                 {subeventType(subEvent, index)}
                                             </Tab.Pane>
@@ -132,7 +156,7 @@ let ModalEvent = (props) => {
 }
 
 let mapStateToProps = (({ front, events, auth }) => {
-
+    
     return {
         events: events.events,
         currentEvent: events.currentEvent,
@@ -141,18 +165,20 @@ let mapStateToProps = (({ front, events, auth }) => {
         subEvents: events.subEvents
             ? events.subEvents
             : [],
-        mates: events.events[events.currentEvent]
-            ? events.events[events.currentEvent].mates
-            : [],
+       
         currentUser: auth.currentUser,
+        subEventsTypes: events.subEventsTypes,
+        tripUser: events.users
     };
 })
 let mapDispatchToProps = (dispatch => {
     return {
         setLgShow: () => dispatch(openCloseEventModal(false)),
         setCurrentSubEventId: (index) => dispatch(setCurrentSubEventId(index)),
-        newSubEvent: ({ type, name }) => dispatch(newSubEvent({ type, name })),
-        checkMate: ({ mateid, value }) => dispatch(checkMateOnEvent({ mateid, value }))
+        newSubEvent: (e) => dispatch(newSubEvent(e)),
+        checkMate: ({ mateid, value }) => dispatch(checkMateOnEvent({ mateid, value })),
+        changeEventName: (event) => dispatch(changeEventName(event))
+
     }
 
 })

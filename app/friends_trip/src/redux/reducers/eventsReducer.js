@@ -129,7 +129,7 @@ export const eventsReducer = (state = initState, action) => {
     let tags, subEvents, events, trips, currentEvent
     switch (action.type) {
         case GET_USER:
-            return { ...state, tags, cachUsers:action.payload }
+            return { ...state, cachUsers:action.payload }
         case CHANGE_EVENT_TAG:
             tags = [...state.tags]
             events = [...state.events]
@@ -234,7 +234,12 @@ export const eventsReducer = (state = initState, action) => {
             return { ...state, subEvents: subEvents }
         case CHECKMATE_ON_EVENT:
             events = [...state.events]
-            events[state.currentEvent].mates.find(e => e.id === action.payload.mateid).mate = action.payload.value
+            let currentMates = events.find(e=>e.id===state.currentEvent).mates.find(e => e.id === action.payload.mateid)
+            if(currentMates!==undefined){
+                currentMates.mates = action.payload.value
+            }else{
+                events.find(e=>e.id===state.currentEvent).mates.push({id:action.payload.mateid,mates:action.payload.value})
+            }
             return { ...state, events: events }
         case REMOVE_ALL:
             return {events: [],
@@ -285,7 +290,8 @@ export const eventsReducer = (state = initState, action) => {
             return { ...state, ...toUpdate }
         case ADD_USER:
             let users = [...state.users]
-            users.push({id:action.payload.userId,username:action.payloadusername})
+            console.log(state)
+            users.push({id:action.payload.userId,username:action.payload.username})
             return { ...state,users }
         default:
             return { ...state }

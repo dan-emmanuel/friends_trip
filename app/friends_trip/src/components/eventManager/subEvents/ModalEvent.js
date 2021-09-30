@@ -119,7 +119,7 @@ let ModalEvent = (props) => {
                                                         id="custom-switch"
                                                         checked={ismate}
                                                         disabled={user.id !== currentUser.id}
-                                                        onChange={(e) => { checkMate({ mateid: currentUser.id, value: e.target.checked }) }}
+                                                        onChange={(e) => { checkMate({ eventId:currentEvent,mateid: currentUser.id, value: e.target.checked }) }}
                                                     />
 
                                                 </div>
@@ -176,7 +176,7 @@ let mapDispatchToProps = (dispatch => {
         setLgShow: () => dispatch(openCloseEventModal(false)),
         setCurrentSubEventId: (index) => dispatch(setCurrentSubEventId(index)),
         newSubEvent: (e) => dispatch(newSubEvent(e)),
-        checkMate: ({ mateid, value }) => dispatch(checkMateOnEvent({ mateid, value })),
+        checkMate: (e) => dispatch(checkMateOnEvent(e)),
         changeEventName: (event) => dispatch(changeEventName(event))
 
     }

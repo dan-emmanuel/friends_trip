@@ -29,6 +29,7 @@ let Params = (props) => {
    
     let addUseraction = (e)=>{
         if(cachUsers.map(e=>e.username).includes(userToInvite.current.value)){
+            console.log(userToInvite.current.value)
            
             addNewUserToTheTrip({
                 userId:cachUsers.find(e=>{return e.username===userToInvite.current.value}).id,

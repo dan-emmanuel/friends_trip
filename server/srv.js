@@ -27,6 +27,8 @@ app.post("/changeLi",eventRequest.CHANGE_LI)
 app.post("/updateNote",eventRequest.NOTE_TEXT_MANAGE)
 app.post("/getUsers",eventRequest.GET_USERS)
 app.post("/addNewUserToTrip",eventRequest.ADD_USER_TO_TRIP)
+app.post("/checkMateOnEvent",eventRequest.CHECK_MATE_ON_EVENT)
+
 
 
 

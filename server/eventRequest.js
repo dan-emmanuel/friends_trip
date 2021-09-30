@@ -14,8 +14,9 @@ const UPDATE_TRIP = async (req, res) => {
                 .returning(['id', "name", "desc"])
                 .insert({
                     groupId: maxGroupId,
-                    name: body.name,
-                    desc: body.desc
+                    desc: body.desc,
+                    name: body.name
+
                 })
             res.end(JSON.stringify({ success: true, action: "create", newTrip: newHolliday }))
         } else {
@@ -109,7 +110,7 @@ const CREATE_NEW_EVENT = async (req, res) => {
         let usersidsReq = await db('group').select('user_id').where('groupId', hollidayId[0].groupId)
         let usersId = usersidsReq.map(e => e.user_id)
         let usersRequest = await db('users').select('id', 'username').whereIn('id', usersId)
-        res.end(JSON.stringify({ success: true, newEvent: insertedInfo[0], subEventsTypes: subEventsTypes,users:usersRequest }))
+        res.end(JSON.stringify({ success: true, newEvent: insertedInfo[0], subEventsTypes: subEventsTypes, users: usersRequest }))
 
     } catch (error) {
         console.log(error)
@@ -125,7 +126,7 @@ const CHANGE_EVENT_TAG = async (req, res) => {
             })
         res.end(JSON.stringify({ success: true, action: "update" }))
     } catch (error) {
-
+        console.log(error)
     }
 }
 const CHANGE_EVENT_NAME = async (req, res) => {
@@ -137,6 +138,7 @@ const CHANGE_EVENT_NAME = async (req, res) => {
             })
         res.end(JSON.stringify({ success: true, action: "update" }))
     } catch (error) {
+        console.log(error)
 
     }
 }
@@ -145,7 +147,9 @@ const NEW_LI = async (req, res) => {
     try {
         let newLi = await db("list").returning("id").insert({
             text: body.text,
-            subeventId: body.id
+            subeventId: body.id,
+
+
         })
         res.end(JSON.stringify({ success: true, id: newLi[0] }))
 
@@ -257,6 +261,7 @@ const GET_USERS = async (req, res) => {
             .whereNotIn('id', body.noNeededUsersId)
         res.end(JSON.stringify({ success: true, matched }))
     } catch (error) {
+        console.log(error)
 
     }
 }
@@ -269,6 +274,32 @@ const ADD_USER_TO_TRIP = async (req, res) => {
         groupId = groupIdrequest[0].groupId
         await db("group")
             .insert({ user_id: body.userId, groupId: groupId })
+        res.end(JSON.stringify({ success: true }))
+
+    } catch (error) {
+        console.log(error)
+    }
+}
+const CHECK_MATE_ON_EVENT = async (req, res) => {
+    let body = req.body
+    try {
+        console.log(body)
+        let formerJson = await db('events').select("mates").where("id",body.eventId)
+        console.log(formerJson)
+        let currentUserinFormerJson = formerJson[0].mates.find(e=>e.id===body.mateid)
+        console.log(currentUserinFormerJson)
+        if(currentUserinFormerJson==undefined){
+            formerJson[0].mates.push({"id":body.mateid,"mates":body.value}) 
+        }else{
+            let index = formerJson[0].mates.indexOf(currentUserinFormerJson)
+            formerJson[0].mates[index].mates = body.value
+            // currentUserinFormerJson.mates = body.value
+            
+        }
+        console.log(currentUserinFormerJson)
+        await db('events').update({"mates":JSON.stringify(formerJson[0].mates)}).where("id",body.eventId)        // await db('table').update({
+        //     mates: knex.raw(`jsonb_set(??, '{lat}', ?)`, ['jsonbColumn', newLatValue])
+        //   })
         res.end(JSON.stringify({ success: true }))
 
     } catch (error) {
@@ -289,5 +320,7 @@ module.exports = {
     GET_ALL_SUB_EVENTS,
     CHANGE_LI,
     GET_USERS,
-    ADD_USER_TO_TRIP
+    ADD_USER_TO_TRIP,
+    CHECK_MATE_ON_EVENT
+    
 }

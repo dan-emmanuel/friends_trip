@@ -211,11 +211,17 @@ export const changeNote = (e) => async (dispatch) => {
         payload: e
     })
 }
-export const checkMateOnEvent = ({ mateid, value }) => {
-    return {
+export const checkMateOnEvent = (e)=>async (dispatch) => {
+    await axios({
+        method: 'post',
+        url: `${process.env.REACT_APP_SRV_URL}checkMateOnEvent`,
+        data: e
+    });
+    dispatch({
         type: CHECKMATE_ON_EVENT,
-        payload: { mateid, value }
-    }
+        payload: e
+    })
+   
 }
 export const getAllTrips = (e) => async (dispatch) => {
     try {

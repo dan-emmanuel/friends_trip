@@ -16,7 +16,8 @@ let GET_USER = async(req, res) => {
         let result = await db('users').select(`username`, "id").where('firebase_id', body.useruid)
         res.end(JSON.stringify({ ...result[0], success: true }))
     } catch (error) {
-        res.end(JSON.stringify({ ...e, success: false }))
+        console.log(error)
+        res.end(JSON.stringify({ ...error, success: false }))
 
     }
 }

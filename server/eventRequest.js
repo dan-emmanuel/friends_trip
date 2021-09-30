@@ -283,11 +283,8 @@ const ADD_USER_TO_TRIP = async (req, res) => {
 const CHECK_MATE_ON_EVENT = async (req, res) => {
     let body = req.body
     try {
-        console.log(body)
         let formerJson = await db('events').select("mates").where("id",body.eventId)
-        console.log(formerJson)
         let currentUserinFormerJson = formerJson[0].mates.find(e=>e.id===body.mateid)
-        console.log(currentUserinFormerJson)
         if(currentUserinFormerJson==undefined){
             formerJson[0].mates.push({"id":body.mateid,"mates":body.value}) 
         }else{
@@ -296,7 +293,6 @@ const CHECK_MATE_ON_EVENT = async (req, res) => {
             // currentUserinFormerJson.mates = body.value
             
         }
-        console.log(currentUserinFormerJson)
         await db('events').update({"mates":JSON.stringify(formerJson[0].mates)}).where("id",body.eventId)        // await db('table').update({
         //     mates: knex.raw(`jsonb_set(??, '{lat}', ?)`, ['jsonbColumn', newLatValue])
         //   })

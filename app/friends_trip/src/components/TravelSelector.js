@@ -144,8 +144,8 @@ let mapStateToProps = (({ events,auth }) => {
 })
 let mapDispatchToProps = (dispatch => {
     return {
-        setCurrentTrip: (id) => {     console.log(id);dispatch(setCurrentTrip(id)) },
-        changeTripInfo: (tripInfo) => { dispatch(changeTripInfo(tripInfo)) },
+        setCurrentTrip: (id) => dispatch(setCurrentTrip(id)) ,
+        changeTripInfo: (tripInfo) => dispatch(changeTripInfo(tripInfo)),
         
     };
 })

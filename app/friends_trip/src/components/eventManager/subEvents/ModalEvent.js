@@ -104,7 +104,6 @@ let ModalEvent = (props) => {
                                             tripUser.map((user, index) => {
                                                 let thatevent = events.find(e=>e.id===currentEvent)
                                                 if(thatevent){
-                                                    console.log(user)
                                                     let mates = thatevent.mates
                                                     let thatMate = mates.find(e=>e.id===user.id)
                                                     let ismate = thatMate&&thatMate.mates

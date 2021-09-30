@@ -203,7 +203,6 @@ export const eventsReducer = (state = initState, action) => {
 
                 currentUl.items = [{ text: action.payload.text, id: action.payload.id, done: false , subeventId:state.currentSubEvent}]
             }else{
-                console.log(state.subEvents)
                 currentUl.items.push({ text: action.payload.text, id: action.payload.id, done: false, subeventId:state.currentSubEvent })
             }
             return { ...state, subEvents: subEvents }

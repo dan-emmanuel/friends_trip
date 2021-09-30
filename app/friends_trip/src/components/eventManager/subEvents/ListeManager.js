@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { ListGroup, ProgressBar, Collapse, Button, Form, InputGroup, FormControl } from "react-bootstrap";
 import { makeLiChecked,newLi } from "../../../redux/actions/eventActions"
@@ -10,17 +10,7 @@ let ListManager = (props) => {
         subEvents,
         newLi
     } = props
-    useEffect(() => {
-        console.log(subEvents[index])
-        console.log("item",subEvents[index].items!==undefined)
-        console.log('type',subEvents[index].type)
-        console.log("index",subEvents[index] !== undefined)
-
-
-        
-
-
-      },[subEvents]);
+   
     let changeCheckBoxVal = (e, index) => {
         let value = e.currentTarget.checked
 

@@ -175,10 +175,7 @@ export const newLi = (e) => async (dispatch) => {
             data: e
         });
         e.id = li.data.id
-        console.log({
-            type: NEW_LI,
-            payload: e
-        })
+    
         dispatch({
             type: NEW_LI,
             payload: e

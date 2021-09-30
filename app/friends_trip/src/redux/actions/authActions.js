@@ -37,7 +37,6 @@ export const signInAction = ({ mail, password }) => async (dispatch) => {
     try {
         let user = await auth.signInWithEmailAndPassword(mail, password)
         let uuid = user.user.uid
-        console.log(uuid)
         let userDatas = await axios({
             method: 'post',
             url: `${process.env.REACT_APP_SRV_URL}signIn`,

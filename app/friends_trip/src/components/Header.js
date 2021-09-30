@@ -28,7 +28,7 @@ let Header = (props) => {
                     <Container>
                         <Navbar.Brand href="#">My Friends Trip</Navbar.Brand>
                         <div className="d-flex align-items-center">
-                            <div className="me-2">bonjour {currentUser.name}</div>
+                            <div className="me-2">hello {currentUser.name}</div>
                             <Button variant="outline-danger" onClick={()=>signOut()} className="border-0">
                                 <IoLogOut />
                             </Button>

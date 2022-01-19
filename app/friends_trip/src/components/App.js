@@ -22,7 +22,7 @@ function App(props) {
           <Route path="/signup">
             <Signup />
           </Route>
-          <Route path="/signin">
+          <Route path="/login">
             <Signin />
           </Route>
           <Route path="/event/event">
